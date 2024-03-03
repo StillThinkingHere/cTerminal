@@ -56,14 +56,10 @@ def echoback(args):
 def sendDSM(args):
     if len(args) > 3:
         main_window.output("Sending message")
-        message = len(args)-2
-        messages = []
-        final_output = ""
-        for iteration in range(message):
-            messages.append(args[iteration+2])
-        for iteration in range(1, len(messages)):
-            final_output = f"{final_output} {messages[iteration]}"
-        post = requests.post(f"https://discord.com/api/v9/channels/{str(args[1])}/messages", json={"content":final_output }, headers={"Authorization":str(args[0])})
+        message = ""
+        for item in args[2:]:
+            message += item + " "
+        post = requests.post(f"https://discord.com/api/v9/channels/{str(args[1])}/messages", json={"content":message}, headers={"Authorization":str(args[0])})
         time.sleep(0.5)
         match post.status_code:
             case 200:
